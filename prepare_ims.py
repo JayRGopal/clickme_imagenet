@@ -123,11 +123,9 @@ im_names = np.asarray(
     [re.split('_',re.split(os.path.sep,x)[-1])[0] for x in images])
 #import pdb;pdb.set_trace()
 im_categories = np.unique(im_names)
-print("All categories:",im_categories)
 selected_categories = np.copy(im_categories)
 np.random.shuffle(selected_categories)
 selected_categories = selected_categories[:num_categories]
-print("Selected categories:", selected_categories)
 
 # Clear previous images -- no reason to do this unless debugging
 # if clear_previous:
