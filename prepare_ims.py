@@ -89,13 +89,19 @@ im_dir = config.imagenet_train_path
 target_dir = config.imagenet_train_path
 validation_dir = config.imagenet_validation_path  #only used if create_validation_set = True (vestige)
 
-if not os.path.exists(target_dir):
-    os.makedirs(target_dir)
-if not os.path.exists(validation_dir):
-    os.makedirs(validation_dir)
-if not os.path.exists('db_dump'):
-    os.makedirs('db_dump')
+try:
+    original_umask = os.umask(0)
+    
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+    if not os.path.exists(validation_dir):
+        os.makedirs(validation_dir)
+    if not os.path.exists('db_dump'):
+        os.makedirs('db_dump')
 
+finally:
+    os.umask(original_umask)
+    
 # Get synsets or other labels
 _, labels = get_synset()
 
