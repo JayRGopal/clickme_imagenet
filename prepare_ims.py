@@ -142,7 +142,6 @@ image_count = 0
 #pdb.set_trace()
 for cn in range(num_categories):
     #import pdb;pdb.set_trace()
-    print("What1",selected_categories[cn])
     category_ims = np.where(im_names == selected_categories[cn])[0]
     # print("Category Images:", category_ims)
     np.random.shuffle(category_ims)
