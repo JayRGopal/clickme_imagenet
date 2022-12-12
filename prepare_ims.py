@@ -87,7 +87,7 @@ mirc_dir = config.mirc_image_path  # 10 mirc images
 # Random sampling directories
 im_dir = config.imagenet_train_path
 target_dir = config.imagenet_train_path
-validation_dir = config.imagenet_validation_path  #only used if create_validation_set = True (vestige)
+validation_dir = config.imagenet_train_path  #only used if create_validation_set = True (vestige)
 
 try:
     original_umask = os.umask(0)
