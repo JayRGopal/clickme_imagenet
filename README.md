@@ -1,3 +1,5 @@
+![Screenshot of the webapp](https://github.com/serre-lab/click_draw/blob/main/clickdraw.png)
+*Screenshot of the Webapp*
 
 # Setting up the webapp
 
