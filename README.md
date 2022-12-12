@@ -1,5 +1,6 @@
-Setting up the webapp
-#0. Install the following libraries:
+# Setting up the webapp
+
+## 0. Install the following libraries:
 	https://github.com/drewlinsley/clickmap_prediction
 	
 	https://github.com/drewlinsley/tf_experiments
@@ -18,7 +19,7 @@ Setting up the webapp
         )
 
 
-#1. Prepare postgresql databse
+## 1. Prepare postgresql databse
 	sudo apt-get install postgresql libpq-dev postgresql-client postgresql-client-common #Install posetgresql with online installer
 	
 	sudo -i -u postgres #goes into postgres default user
@@ -50,12 +51,12 @@ Setting up the webapp
 	
 	exit # Exit sql user
 
-#2. Initialize images into the database
+## 2. Initialize images into the database
 
 	python prepare_ims.py
 
 =======
-#3. Run the CNN guess server (preferrably in a screen):
+## 3. Run the CNN guess server (preferrably in a screen):
 
 	cd guess_server
 	
