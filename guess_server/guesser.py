@@ -43,15 +43,19 @@ if args.backend == "tpu":
 
 
 # def preprocess_harmonized(image, final_size=(224, 224)):
-def preprocess_harmonized(image, final_size=(256, 256)):
+def preprocess_harmonized(image, final_size=(224, 224)):
     ## image is (X, Y, 3).
-    _mean_imagenet = tf.constant([0.485, 0.456, 0.406], shape=[1, 1, 3], dtype=tf.float32)
-    _std_imagenet =  tf.constant([0.229, 0.224, 0.225], shape=[1, 1, 3], dtype=tf.float32)
-    image  = np.array(image / 255.0, dtype=np.float32)
-    image  = np.array(image - _mean_imagenet, dtype=np.float32)
-    image  = np.array(image / _std_imagenet, dtype=np.float32)
-    image = tf.image.resize_with_crop_or_pad(image, final_size[0], final_size[1])
-    image   = tf.cast(image, tf.float32)
+    image  = np.array(image, dtype=np.float32)    
+    image  = cv2.resize(image, (224, 224))
+    image  = tf.cast(image, tf.float32)
+
+    # _mean_imagenet = tf.constant([0.485, 0.456, 0.406], shape=[1, 1, 3], dtype=tf.float32)
+    # _std_imagenet =  tf.constant([0.229, 0.224, 0.225], shape=[1, 1, 3], dtype=tf.float32)
+    # image  = np.array(image / 255.0, dtype=np.float32)
+    # image  = np.array(image - _mean_imagenet, dtype=np.float32)
+    # image  = np.array(image / _std_imagenet, dtype=np.float32)
+    # image = tf.image.resize_with_crop_or_pad(image, final_size[0], final_size[1])
+    # image   = tf.cast(image, tf.float32)
 
     return image
 
