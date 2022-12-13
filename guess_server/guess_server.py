@@ -27,7 +27,6 @@ def guess_path(): # #
     # print('Clicks on %s: %d' % (rdata['image_name'], len(rdata['click_array'])))
     # Get true label
     class_index = int(os.path.basename(rdata['image_name']).split('_')[0])
-    print('True label: %s' % c)
     # Ask the oracle
     try:
         #import pdb;pdb.set_trace()
