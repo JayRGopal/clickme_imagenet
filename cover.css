@@ -45,7 +45,7 @@ body {
 }
 
 #main_status:after {
-  content: 'CLICKDRAW';
+  content: 'CLICKTIONARY';
   position: absolute;
   top: 17px;
   left: 17px;
