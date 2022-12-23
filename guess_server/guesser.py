@@ -27,7 +27,11 @@ parser.add_argument('--backend', type=str, required=False, default="gpu")
 args = parser.parse_args()
 
 data_dir = '../images/' 
-model_dir = '../models/clickdraw_mobilenet.h5'
+#model_dir = '../models/lipschitz_clickdraw.h5'
+#model_dir = '../models/clickdraw_mobilenet.h5'
+#model_dir = '../models/lipschitz2.h5'
+#model_dir = '../models/mobilenet_cutout.h5'
+model_dir = '../models/hkr6.h5'
 
 class_names = ['microwave', 'golf club', 'house plant', 'tooth', 'cat head', 'truck', 'fireplace', 't-shirt', 'carrot', 'pizza slice', 'snorkel', 'megaphone', 'boomerang', 'cactus', 'shorts', 'triangle', 'suitcase', 'pear', 'skateboard', 'saw', 'dolphin', 'map', 'door', 'knife', 'flashlight']
 
@@ -36,7 +40,7 @@ CANVAS_SIZE = (256, 256)
 
 # TPU Code
 if args.backend == "tpu":
-    resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='local')
+    resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='clickmev2')
     tf.config.experimental_connect_to_cluster(resolver)
     tf.tpu.experimental.initialize_tpu_system(resolver)
     strategy = tf.distribute.experimental.TPUStrategy(resolver)
@@ -48,7 +52,7 @@ def preprocess_harmonized(image, final_size=(224, 224)):
     image  = np.array(image, dtype=np.float32)    
     image  = cv2.resize(image, (224, 224))
     image  = tf.cast(image, tf.float32)
-
+    #print("MinMax Pixel:", np.min(image), np.max(image))
     # _mean_imagenet = tf.constant([0.485, 0.456, 0.406], shape=[1, 1, 3], dtype=tf.float32)
     # _std_imagenet =  tf.constant([0.229, 0.224, 0.225], shape=[1, 1, 3], dtype=tf.float32)
     # image  = np.array(image / 255.0, dtype=np.float32)
@@ -62,7 +66,8 @@ def preprocess_harmonized(image, final_size=(224, 224)):
 
 def load_im(im_name, data_dir=data_dir, final_size=CANVAS_SIZE):
     fpath = data_dir + im_name
-    im = Image.open(fpath)
+    #im = Image.open(fpath)
+    im = cv2.imread(fpath)
     im = np.array(im, dtype=np.float32)
     if len(im.shape) == 2:
       im = im[..., None].repeat(3, -1)
@@ -109,6 +114,7 @@ def load_guesser():
             return tf.keras.models.load_model(model_dir)
     return tf.keras.models.load_model(model_dir)
     
+save_counter = 0
 def get_image_prediction(guesser, image_name, clicks, click_size=21): # TODO: Using a larger click size for debugging
     # Return prediction index
     # Load image into batch
@@ -133,13 +139,15 @@ def get_image_prediction(guesser, image_name, clicks, click_size=21): # TODO: Us
         y1 = min(y + (click_size+1) // 2, input_shape[1])
         x0 = max(x - click_size // 2, 0)
         x1 = min(x + (click_size+1) // 2, input_shape[2])
+        #input_batch[0, :, :, :] = im
         input_batch[0, y0:y1, x0:x1, :] = im[y0:y1, x0:x1, :]
+    #np.save(f'{np.random.randint(0,1000)}.npy', input_batch)
 
-    if args.backend == "tpu":
-        with strategy.scope():
-            prob = guesser.predict(input_batch)
-    else:
-        prob = guesser.predict(input_batch)
+    #if args.backend == "tpu":
+    #    with strategy.scope():
+    #        prob = guesser.predict(input_batch)
+    #else:
+    prob = guesser.predict(input_batch)
     #print("Probability:", prob)
     #prob = guesser.session.run(guesser.predict, feed_dict=guesser.feed_dict)[0].squeeze()
     # Get class index
