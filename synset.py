@@ -3,10 +3,10 @@ import re
 def get_synset():
     synset = [
         "n03761084 microwave",
-        "n03446268 golfclub",
-        "n13083023 houseplant",
+        "n03446268 golf club",
+        "n13083023 house plant",
         "n04452848 tooth",
-        "n02121620 cathead",
+        "n02121620 cat head",
         "n04490091 truck",
         "n03346455 fireplace",
         "n03978966 t-shirt",

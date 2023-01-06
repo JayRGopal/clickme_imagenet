@@ -111,7 +111,7 @@ cur = conn.cursor()
 # Grab an equal number of images from each category
 num_per_category = 10
 num_categories = 25
-generations_per_epoch = 1
+generations_per_epoch = 10
 clear_previous = False #True  # Reset images table when you run this
 create_validation_set = False
 
