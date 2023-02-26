@@ -1,102 +1,74 @@
-![Screenshot of the webapp](https://github.com/serre-lab/click_draw/blob/main/clickdraw.png)
-*Screenshot of the Webapp*
+# ClickMe Full ImageNet Version
 
-# Setting up the webapp
+# Setup
 
-```
-sudo apt-get install npm nodejs
-npm install
-```
+To run ClickMe, clone this repository onto whatever will act as the server publicly hosting the website. The recommended method is using a Google TPU virtual machine and hosting it there (if doing this, make a TPU-VM, SSH into it, and clone the repository there). The host server needs to have either a GPU or TPU availabe. After cloning the repository, do the following steps (the rest of the instructions will assume being on a TPU-VM).
+
+## 0. SSH into the TPU-VM
+
+It is recommended that you do this in either a screen or tmux window so that the SSH connection doesn't die
+
+	gcloud alpha compute tpus tpu-vm ssh <TPU_NAME> --zone=<ZONE_NAME>
+
+## 1. Initial installs:
 	
-If using anaconda, you may need to use the following commands:
+	sudo apt-get update
+	sudo apt-get install npm nodejs
+	cd clickme_imagenet/
+	npm install
 
-```
-conda install nomkl numpy scipy scikit-learn numexpr
-conda remove mkl mkl-service
-```
+Note: if using anaconda, you may need to use the following commands:
+* ```conda install nomkl numpy scipy scikit-learn numexpr```
+* ```conda remove mkl mkl-service```
 
-## Step 1: Prepare postgresql database
+## 2. Prepare postgresql databse
 
 Install posetgresql with online installer
-```
-sudo apt-get install postgresql libpq-dev postgresql-client postgresql-client-common 
-```
 
-Goes into postgres default user
-```
-sudo -i -u postgres
-```
+	sudo apt-get install postgresql libpq-dev postgresql-client postgresql-client-common
+	sudo -u postgres psql
 
-Enter the postgres interface
-```
-psql postgres 
-```
+You will now be in the postgres interface
 
-Create the admin for this webapp. make sure this password is also reflected in `db.js/db_pw`
-```
-create role mircs WITH LOGIN superuser password 'XXX';
-```
+	create role mircs WITH LOGIN superuser password 'serrelab';
+	alter role mircs superuser;
+	create database mircs with owner mircs; 
+	\q
 
-Ensure we are sudo
-```
-alter role mircs superuser; 
-```
+Enter the next commands using the password created above ('serrelab')
 
-Create the webapp's database
-```
-create database mircs with owner mircs; 
-```
-
-Quit PSQL
-```
-\q
-```
-
-## Step 2: Add the required tables
-
-Prepare the database for connect-pg-simple middlware
-```
-psql mircs -h 127.0.0.1 -d mircs < node_modules/connect-pg-simple/table.sql 
-```
-
-Log into the database with the admin credentials
-```
-psql mircs -h 127.0.0.1 -d mircs 
-```
-
-Create a table that will point to all the images in the webapp
-```
-create table images (_id bigserial primary key, image_path varchar, syn_name varchar, click_path json, answers json, generations bigint); 
-```
-
-Create a table that holds the number of images we are working with (for random selection later on)
-```
-create table image_count (_id bigserial primary key,num_images bigint, current_generation bigint, iteration_generation bigint, generations_per_epoch bigint);
-```
-
-Create a table that will track some fun stuff for the website, like consecutive clicks
-```	
-create table cnn (_id bigserial primary key, sixteen_baseline_accuracy float, nineteen_baseline_accuracy float, sixteen_attention_accuracy float, nineteen_attention_accuracy float, epochs bigint, date varchar);
-```
-
-Create a table that will track some fun stuff for the website, like consecutive clicks
-```
-create table clicks (_id bigserial primary key, high_score float, date timestamp with time zone); 
-```
-
-Create the User table
-```
-create table users (_id bigserial primary key, cookie varchar unique, name varchar, score float, email varchar, last_click_time timestamp with time zone);
-```
+	sudo -u postgres psql mircs -h 127.0.0.1 -d mircs < node_modules/connect-pg-simple/table.sql
+	sudo -u postgres psql mircs -h 127.0.0.1 -d mircs
+	create table images (_id bigserial primary key, image_path varchar, syn_name varchar, click_path json, answers json, generations bigint);
+	create table image_count (_id bigserial primary key,num_images bigint, current_generation bigint, iteration_generation bigint, generations_per_epoch bigint);
+	create table cnn (_id bigserial primary key, sixteen_baseline_accuracy float, nineteen_baseline_accuracy float, sixteen_attention_accuracy float, nineteen_attention_accuracy float, epochs bigint, date varchar);
+	create table clicks (_id bigserial primary key, high_score float, date timestamp with time zone);
+	create table users (_id bigserial primary key, cookie varchar unique, name varchar, score float, email varchar, last_click_time timestamp with time zone);
 	
-## 2. Initialize images into the database
+	\q
 
-```
-python prepare_ims.py
-```
+Some final installs
 
-## 3. Run the model guess server (preferrably in a screen):
-```
-cd guess_server	
-python guess_server.py
-```
+	npm install express pg express-server connect-pg-simple request yargs
+	pip3 install psycopg2
+
+## 3. Initialize images into the database
+
+	python3 prepare_ims.py
+
+Run the CNN guess server (this is the backend that runs the harmonized CNN and sends the prediction to the frontend)
+
+	cd guess_server
+	pip3 install flask
+	python3 guess_server.py
+
+## 4. Run the frontend
+
+Detach from the screen/tmux window you are on, open a new one, and reconnect to the TPU
+
+	gcloud alpha compute tpus tpu-vm ssh <TPU_NAME> --zone=<ZONE_NAME>
+
+Run the frontend
+
+	cd clickme_imagenet/
+	node main.js
