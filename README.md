@@ -44,25 +44,26 @@ Enter the next commands using the password created above ('serrelab')
 	create table cnn (_id bigserial primary key, sixteen_baseline_accuracy float, nineteen_baseline_accuracy float, sixteen_attention_accuracy float, nineteen_attention_accuracy float, epochs bigint, date varchar);
 	create table clicks (_id bigserial primary key, high_score float, date timestamp with time zone);
 	create table users (_id bigserial primary key, cookie varchar unique, name varchar, score float, email varchar, last_click_time timestamp with time zone);
-	
 	\q
 
 Some final installs
 
 	npm install express pg express-server connect-pg-simple request yargs
-	pip3 install psycopg2
+	pip3 install psycopg2 opencv-python
 
 ## 3. Initialize images into the database
 
 	python3 prepare_ims.py
 
-Run the CNN guess server (this is the backend that runs the harmonized CNN and sends the prediction to the frontend)
+## 4. Run the CNN guess server
+
+This is the backend that runs the harmonized CNN and sends the prediction to the frontend
 
 	cd guess_server
 	pip3 install flask
 	python3 guess_server.py
 
-## 4. Run the frontend
+## 5. Run the frontend
 
 Detach from the screen/tmux window you are on, open a new one, and reconnect to the TPU
 
