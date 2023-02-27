@@ -1,6 +1,27 @@
 # ClickMe Full ImageNet Version
 
-# Setup
+# Quick Setup for TPU-VM's
+
+## 1. Get on a TPU-VM
+
+Once you have created the TPU-VM you will use to host ClickMe, open a tmux/screen window and run:
+
+	gcloud alpha compute tpus tpu-vm ssh <TPU_NAME> --zone=<ZONE_NAME>
+	git clone https://github.com/JayRGopal/clickme_imagenet.git
+
+## 2. Setup the guess server backend
+
+	chmod u+x clickme_imagenet/quick_setup_backend.sh
+	./clickme_imagenet/quick_setup_backend.sh
+
+## 3. Setup the frontend
+
+Detach from the screen/tmux window you are on, open a new one, reconnect to the TPU and run the frontend
+
+	gcloud alpha compute tpus tpu-vm ssh <TPU_NAME> --zone=<ZONE_NAME>
+	node /clickme_imagenet/main.js
+
+# Manual Setup
 
 To run ClickMe, clone this repository onto whatever will act as the server publicly hosting the website. The recommended method is using a Google TPU virtual machine and hosting it there (if doing this, make a TPU-VM, SSH into it, and clone the repository there). The host server needs to have either a GPU or TPU availabe. After cloning the repository, do the following steps (the rest of the instructions will assume being on a TPU-VM).
 
