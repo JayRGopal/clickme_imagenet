@@ -1,6 +1,7 @@
 #!/bin/bash
 
 Blue=$'\e[0;34m'
+Color_Off=$'\e[0m'
 
 echo "${Blue}starting up...${Color_Off}"
 echo y | sudo apt-get update
@@ -19,13 +20,20 @@ echo "create table image_count (_id bigserial primary key,num_images bigint, cur
 echo "create table cnn (_id bigserial primary key, sixteen_baseline_accuracy float, nineteen_baseline_accuracy float, sixteen_attention_accuracy float, nineteen_attention_accuracy float, epochs bigint, date varchar);" | sudo -u postgres psql mircs -h 127.0.0.1 -d mircs
 echo "create table clicks (_id bigserial primary key, high_score float, date timestamp with time zone);" | sudo -u postgres psql mircs -h 127.0.0.1 -d mircs
 echo "create table users (_id bigserial primary key, cookie varchar unique, name varchar, score float, email varchar, last_click_time timestamp with time zone);" | sudo -u postgres psql mircs -h 127.0.0.1 -d mircs
+echo "\q"
+echo "serrelab"
+echo "serrelab"
+echo "serrelab"
+echo "serrelab"
+echo "serrelab"
+echo "serrelab"
 
 echo "${Blue}adding images to database...${Color_Off}"
 python3 prepare_ims.py
 
 echo "${Blue}setting up for backend server..."
 cd guess_server
-echo y | pip3 install flask
+echo y | pip3 install flask opencv-python
 
 echo "${Blue}running the backend server..."
 python3 guess_server.py
