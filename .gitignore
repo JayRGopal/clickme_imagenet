@@ -130,3 +130,6 @@ dmypy.json
 
 # npm node-modules
 /node_modules
+
+# Mac metadata
+.DS_Store
