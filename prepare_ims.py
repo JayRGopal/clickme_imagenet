@@ -373,5 +373,6 @@ import pdb
 
 train_set = get_train_dataset(128)
 print('Train Dataset Loaded')
-r = train_set.take(1)
+ims, hmap, ylabel, bool = train_set.take(1)
+
 import pdb;pdb.set_trace()
