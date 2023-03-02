@@ -2,6 +2,31 @@
 
 # Quick Setup for TPU-VM's
 
+## 0. TODO
+
+Needs: 
+
+
+Connect to Google Cloud 
+
+Once all users (together) annotate the entire dataset, prepare_ims.py needs to be reset. Temporary fix: re-run prepare_ims.py 
+
+Need to move the db_dump to google cloud
+
+Once you get image right, it flips through many imgs before getting to next image. Flips through at different speeds
+
+Score doesn't update consistently
+
+Passwords
+
+
+
+Wants:
+
+Convert data_proc_config to yaml
+
+
+
 ## 1. Get on a TPU-VM
 
 Once you have created the TPU-VM you will use to host ClickMe, open a tmux/screen window and run:
