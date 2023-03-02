@@ -35,6 +35,8 @@ app.use('/node_modules',  express.static(__dirname + '/node_modules'));
 app.use('/style',  express.static(__dirname + '/style'));
 app.use('/script',  express.static(__dirname + '/script'));
 app.use('/web_content', express.static(__dirname + '/web_content'));
+app.use('/images', express.static(__dirname + '/images'));
+
 
 app.post('/guess', function(req,res) {
     var x = request(guess_server);
