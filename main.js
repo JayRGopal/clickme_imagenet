@@ -35,7 +35,7 @@ app.use('/node_modules',  express.static(__dirname + '/node_modules'));
 app.use('/style',  express.static(__dirname + '/style'));
 app.use('/script',  express.static(__dirname + '/script'));
 app.use('/web_content', express.static(__dirname + '/web_content'));
-app.use('/images', express.static(__dirname + '/images'));
+app.use('/images', express.static(__dirname + '/images')); // Jay made this change
 
 
 app.post('/guess', function(req,res) {
