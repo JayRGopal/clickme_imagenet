@@ -209,7 +209,6 @@ import os
 import tensorflow as tf
 import numpy as np
 
-from augmentations import mixup, flip_left_right
 from preprocess import decode_and_center_crop, decode_and_random_crop, heatmap_diffusion
 
 shards_folder = "/mnt/disks/metapredictor-shards"
