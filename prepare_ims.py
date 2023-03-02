@@ -316,10 +316,11 @@ def _parse_imagenet_prototype(prototype, training=False):
     label = tf.cast(data['image/class/label'], tf.int32) - 1
     label = tf.one_hot(label, 1_000, dtype=tf.bfloat16)
 
-    if training:
-        image, _ = _preprocess_for_train(data['image/encoded'], data['image/encoded'])
-    else:
-        image = _preprocess_for_eval(data['image/encoded'])
+    # if training:
+    #     image, _ = _preprocess_for_train(data['image/encoded'], data['image/encoded'])
+    # else:
+    #     image = _preprocess_for_eval(data['image/encoded'])
+    image = _preprocess_for_eval(data['image/encoded'])
 
     heatmap = tf.zeros((SIZE, SIZE, 1), dtype=tf.bfloat16)
 
