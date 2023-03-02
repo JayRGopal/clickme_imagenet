@@ -242,9 +242,6 @@ STD_IMAGENET = tf.constant([0.229, 0.224, 0.225], shape=[1, 1, 3], dtype=tf.bflo
 
 def _apply_mixup(dataset):
     dataset = dataset.shuffle(1024)
-    dataset = dataset.batch(2)
-    dataset = dataset.map(mixup, num_parallel_calls=AUTO)
-    dataset = dataset.unbatch()
     dataset = dataset.shuffle(1024)
     return dataset
 
@@ -351,26 +348,20 @@ def get_clickme_val_dataset(batch_size):
 
 
 def get_train_dataset(batch_size, mixup=True):
-    clickme_dataset = _init_shards(train_clickme_shards, training=True).map(
-        lambda proto: _parse_clickme_prototype(proto, training=True), num_parallel_calls=AUTO)
     imagenet_dataset = _init_shards(imagenet_train_shards, training=True).map(
         lambda proto: _parse_imagenet_prototype(proto, training=True), num_parallel_calls=AUTO)
 
     imagenet_dataset = imagenet_dataset.apply(tf.data.experimental.ignore_errors())
 
     if mixup:
-        clickme_dataset = _apply_mixup(clickme_dataset)
         imagenet_dataset = _apply_mixup(imagenet_dataset)
 
-    clickme_dataset = clickme_dataset.map(lambda x, h, y: (x, h, y, True), num_parallel_calls=AUTO)
     imagenet_dataset = imagenet_dataset.map(
         lambda x, h, y: (x, h, y, False), num_parallel_calls=AUTO)
 
-    # 80% imagenet, 20% clickme
-    train_dataset = tf.data.experimental.sample_from_datasets(
-        [clickme_dataset, imagenet_dataset], weights=[0.2, 0.8])  # as click-me is ~25% of imagenet
+    # 100% imagenet
+    train_dataset = imagenet_dataset
 
-    train_dataset = train_dataset.map(flip_left_right, num_parallel_calls=AUTO)
     train_dataset = train_dataset.batch(batch_size, drop_remainder=True)
 
     train_dataset = train_dataset.prefetch(AUTO)
