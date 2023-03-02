@@ -19,7 +19,7 @@ Once you have created the TPU-VM you will use to host ClickMe, open a tmux/scree
 Detach from the screen/tmux window you are on, open a new one, reconnect to the TPU and run the frontend
 
 	gcloud alpha compute tpus tpu-vm ssh <TPU_NAME> --zone=<ZONE_NAME>
-	node /clickme_imagenet/main.js
+	node clickme_imagenet/main.js
 
 # Manual Setup
 
