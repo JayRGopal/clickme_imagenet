@@ -123,7 +123,9 @@ DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
         }
         if (num_ims_in_gen <= 1){//iterate iteration_generation
           iteration_generation += 1
-          self.client.query('UPDATE image_count SET iteration_generation=$1',[iteration_generation],function(iterr){
+          //self.client.query('UPDATE image_count SET iteration_generation=$1',[iteration_generation],function(iterr){
+          self.client.query('UPDATE image_count SET iteration_generation=0',function(iterr){
+            
             if (iterr) console.log(iterr);
               console.log('Iterated iteration_generation');
           })
