@@ -53,7 +53,9 @@ var DbManager = function (username, password, host, port, dbName) {
 
 DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
   var self = this;
-  self.client.query('SELECT * FROM image_count WHERE _id=1', function(err,res){
+  //self.client.query('SELECT * FROM image_count WHERE _id=1', function(err,res){
+  self.client.query('SELECT * FROM image_count', function(err,res){
+      
     console.log("Result:", res)
     console.log("Jay & Nick Locate Random Image:", res.rows[0]);
     var global_current_generation = parseInt(res.rows[0].current_generation);
