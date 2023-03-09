@@ -538,6 +538,7 @@ function time_elapsed(){
 }
 
 function skip_question(){
+    console.log('Jay & Nick - Skipping Image Log');
     round_reset('skip');
     answer_status(-1);
 }
