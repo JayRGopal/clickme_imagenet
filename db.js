@@ -55,7 +55,7 @@ DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
   var self = this;
   self.client.query('SELECT * FROM image_count WHERE _id=1', function(err,res){
     console.log("Result:", res)
-    console.log("Akash Locate Random Image:", res.rows[0]);
+    console.log("Jay & Nick Locate Random Image:", res.rows[0]);
     var global_current_generation = parseInt(res.rows[0].current_generation);
     var iteration_generation = parseInt(res.rows[0].iteration_generation);
     var generations_to_epoch = parseInt(res.rows[0].generations_per_epoch);
