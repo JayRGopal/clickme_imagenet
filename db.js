@@ -61,7 +61,9 @@ DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
     var generations_to_epoch = parseInt(res.rows[0].generations_per_epoch);
     var global_num_images = parseInt(res.rows[0].num_images);
     var click_goal = generations_to_epoch * global_num_images;
-    self.client.query('SELECT * FROM images WHERE generations<=$1', [iteration_generation], function (err, res) {
+    //self.client.query('SELECT * FROM images WHERE generations<=$1', [iteration_generation], function (err, res) {
+    self.client.query('SELECT * FROM images', [iteration_generation], function (err, res) {
+        
       if (err) {
         errorCallback(err, 'Error finding image 1');
         return;
