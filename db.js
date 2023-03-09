@@ -53,8 +53,8 @@ var DbManager = function (username, password, host, port, dbName) {
 
 DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
   var self = this;
-  //self.client.query('SELECT * FROM image_count WHERE _id=1', function(err,res){
-  self.client.query('SELECT * FROM image_count', function(err,res){
+  self.client.query('SELECT * FROM image_count WHERE _id=1', function(err,res){
+  //self.client.query('SELECT * FROM image_count', function(err,res){
       
     console.log("Result:", res)
     console.log("Jay & Nick Locate Random Image:", res.rows[0]);
@@ -63,8 +63,8 @@ DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
     var generations_to_epoch = parseInt(res.rows[0].generations_per_epoch);
     var global_num_images = parseInt(res.rows[0].num_images);
     var click_goal = generations_to_epoch * global_num_images;
-    //self.client.query('SELECT * FROM images WHERE generations<=$1', [iteration_generation], function (err, res) {
-    self.client.query('SELECT * FROM images', [iteration_generation], function (err, res) {
+    self.client.query('SELECT * FROM images WHERE generations<=$1', [iteration_generation], function (err, res) {
+    //self.client.query('SELECT * FROM images', function (err, res) {
         
       if (err) {
         errorCallback(err, 'Error finding image 1');
@@ -123,8 +123,8 @@ DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
         }
         if (num_ims_in_gen <= 1){//iterate iteration_generation
           iteration_generation += 1
-          //self.client.query('UPDATE image_count SET iteration_generation=$1',[iteration_generation],function(iterr){
-          self.client.query('UPDATE image_count SET iteration_generation=0',function(iterr){
+          self.client.query('UPDATE image_count SET iteration_generation=$1',[iteration_generation],function(iterr){
+          //self.client.query('UPDATE image_count SET iteration_generation=0',function(iterr){
             
             if (iterr) console.log(iterr);
               console.log('Iterated iteration_generation');
@@ -254,6 +254,8 @@ DbManager.prototype.updateClicks = function (label, click_path, score, username,
 DbManager.prototype.getScoreData = function (callback, errorCallback) {
   var self = this;
   self.client.query('SELECT * FROM image_count WHERE _id=1', function(err,res){
+  //self.client.query('SELECT * FROM image_count', function(err,res){
+    
     var iteration_generation = parseInt(res.rows[0].iteration_generation);
     var generations_to_epoch = parseInt(res.rows[0].generations_per_epoch);
     var global_num_images = parseInt(res.rows[0].num_images);
