@@ -77,7 +77,7 @@ def add_to_db(files,syns,image_count):
     return image_count
 
 
-# Load project config — insert yaml coded here
+# Load project config (insert yaml coded here)
 config = project_settings()
 
 # Fixed directories
