@@ -63,6 +63,7 @@ DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
     var generations_to_epoch = parseInt(res.rows[0].generations_per_epoch);
     var global_num_images = parseInt(res.rows[0].num_images);
     var click_goal = generations_to_epoch * global_num_images;
+    // simplify this to select just one random - select all, order by random, return 1
     self.client.query('SELECT * FROM images WHERE generations<=$1', [iteration_generation], function (err, res) {
     //self.client.query('SELECT * FROM images', function (err, res) {
         
@@ -102,28 +103,30 @@ DbManager.prototype.locateRandomImage = function (callback, errorCallback) {
             if (pyerr) console.log(pyerr);
             console.log('finished training');
           })
+
+          // the following sets counters to keep track of where we are in database
           //Iterate current_generation by generations_per_epoch here
           var new_generation = global_current_generation + generations_to_epoch
-          self.client.query('UPDATE image_count SET current_generation=$1',[new_generation],function(iterr){
+          //self.client.query('UPDATE image_count SET current_generation=$1',[new_generation],function(iterr){
             if (iterr) console.log(iterr);
               console.log('Iterated current_generation by generations_to_epoch');
           })
           //And reset iteration_generation in image_count
           var new_generation = global_current_generation + generations_to_epoch
-          self.client.query('UPDATE image_count SET iteration_generation=0',function(iterr){
+          //self.client.query('UPDATE image_count SET iteration_generation=0',function(iterr){
             if (iterr) console.log(iterr);
               console.log('Reset iteration_generation in image_count');
           })
           //And reset iteration_generation in images
           var new_generation = global_current_generation + generations_to_epoch
-          self.client.query('UPDATE images SET generations=0',function(iterr){
+          //self.client.query('UPDATE images SET generations=0',function(iterr){
             if (iterr) console.log(iterr);
               console.log('Reset iteration_generation in images');
           })
         }
         if (num_ims_in_gen <= 1){//iterate iteration_generation
           iteration_generation += 1
-          self.client.query('UPDATE image_count SET iteration_generation=$1',[iteration_generation],function(iterr){
+          //self.client.query('UPDATE image_count SET iteration_generation=$1',[iteration_generation],function(iterr){
           //self.client.query('UPDATE image_count SET iteration_generation=0',function(iterr){
             
             if (iterr) console.log(iterr);
