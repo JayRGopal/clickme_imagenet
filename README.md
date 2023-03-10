@@ -1,8 +1,16 @@
 # ClickMe Full ImageNet Version
 
-# Quick Setup for TPU-VM's
+## 1 - Discoveries
 
-## 0. TODO
+Looked into skipping images. Appears like the label in guess_server.py does not update. If you look at the backend log, when it skips, it says PREDICTED CORRECTLY multiple times.
+
+
+Looked into prepare_ims. Once the column iteration_generations in the table image_count goes from 0 to 1, the website seems to stop pulling new images. We looked in db.js and couldn't find any code where it was filtering by this condition. Note that removing all filters ("WHERE ...") from db.js makes it so that re-running prepare_ims.py does NOT fix the "image run out" issue
+
+
+
+
+## TO DO
 
 Needs: 
 
@@ -15,8 +23,6 @@ Need to move the db_dump to google cloud
 
 Once you get image right, it flips through many imgs before getting to next image. Flips through at different speeds
 
-Score doesn't update consistently
-
 Passwords
 
 
@@ -25,6 +31,10 @@ Wants:
 
 Convert data_proc_config to yaml
 
+
+
+
+# Quick Setup for TPU-VM's
 
 
 ## 1. Get on a TPU-VM
